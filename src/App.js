@@ -1,23 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import List from './Components/ListItem';
+import { useState } from 'react';
 
 function App() {
+  const [input, setInput] = useState('');
+  const [list, setList] = useState([]);
+  const [color, setColor] = useState(['red', 'green', 'blue']);
+
+  const onchange = (e) => {
+    setInput(e.target.value);
+  }
+  const addItem = () => {
+    if (input !== '') {
+      const toArray = [...list];
+      toArray.push(input);
+      setList(toArray);
+      setInput('');
+    }
+  }
+  let x = -1;
+  const listRender = () => {
+    return <List>
+      <ul>{list.map((item, index) => {
+        if (x > 1) {
+          x = -1;
+        }
+        x++;
+        console.log(x);
+        return <li key={`list-1${index}`} className={color[x]}>{item}</li>
+      }
+      )}</ul>
+    </List>
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input type="text" value={input} onChange={onchange} />
+      <button onClick={addItem}>Add</button>
+      {listRender()}
     </div>
   );
 }
